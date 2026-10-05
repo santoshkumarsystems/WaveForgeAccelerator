@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "format": "waveaccel.byoc_execution_plan_bridge",
+  "backend": "waveaccel",
+  "target_name": "waveaccel-sim",
+  "dtype": "float32",
+  "bind_constants": false,
+  "annotate_codegen": true,
+  "partition_count": 5,
+  "onnx_node_count": 7,
+  "execution_plan_node_count": 7,
+  "full_graph_coverage": true,
+  "partitions": [
+    {
+      "partition_index": 0,
+      "wrapper_function": "fused_relax_permute_dims_relax_matmul_relax_add_relax_nn_relu_waveaccel",
+      "composite": "waveaccel.matmul_bias_relu",
+      "onnx_node_indices": [
+        0,
+        1
+      ],
+      "onnx_ops": [
+        "Gemm",
+        "Relu"
+      ],
+      "execution_plan_node_indices": [
+        0,
+        1
+      ],
+      "initializer_total_bytes": 8320,
+      "tvm_primfuncs": [
+        "matmul"
+      ]
+    },
+    {
+      "partition_index": 1,
+      "wrapper_function": "fused_relax_permute_dims_relax_matmul_relax_add_relax_nn_relu1_waveaccel",
+      "composite": "waveaccel.matmul_bias_relu",
+      "onnx_node_indices": [
+        2,
+        3
+      ],
+      "onnx_ops": [
+        "Gemm",
+        "Relu"
+      ],
+      "execution_plan_node_indices": [
+        2,
+        3
+      ],
+      "initializer_total_bytes": 2112,
+      "tvm_primfuncs": [
+        "matmul1"
+      ]
+    },
+    {
+      "partition_index": 2,
+      "wrapper_function": "fused_relax_permute_dims_relax_matmul_relax_add_waveaccel",
+      "composite": "waveaccel.matmul_bias",
+      "onnx_node_indices": [
+        4
+      ],
+      "onnx_ops": [
+        "Gemm"
+      ],
+      "execution_plan_node_indices": [
+        4
+      ],
+      "initializer_total_bytes": 136,
+      "tvm_primfuncs": [
+        "matmul2"
+      ]
+    },
+    {
+      "partition_index": 3,
+      "wrapper_function": "fused_relax_multiply_waveaccel",
+      "composite": "waveaccel.multiply",
+      "onnx_node_indices": [
+        5
+      ],
+      "onnx_ops": [
+        "Mul"
+      ],
+      "execution_plan_node_indices": [
+        5
+      ],
+      "initializer_total_bytes": 8,
+      "tvm_primfuncs": []
+    },
+    {
+      "partition_index": 4,
+      "wrapper_function": "fused_relax_add_waveaccel",
+      "composite": "waveaccel.add",
+      "onnx_node_indices": [
+        6
+      ],
+      "onnx_ops": [
+        "Add"
+      ],
+      "execution_plan_node_indices": [
+        6
+      ],
+      "initializer_total_bytes": 8,
+      "tvm_primfuncs": []
+    }
+  ]
+}

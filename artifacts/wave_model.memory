@@ -1,0 +1,93 @@
+# WaveAccel ONNX Memory Manifest
+#
+# Author: Santosh Kumar
+# Copyright 2026 Santosh Kumar
+# SPDX-License-Identifier: Apache-2.0
+#
+# Generated automatically from the exported ONNX model.
+# Do not manually edit model-size or graph-dependency values.
+
+# Model-level memory metadata
+batch_size=1
+input_bytes=256
+output_bytes=8
+initializer_count=8
+initializer_elements=2646
+initializer_bytes=10584
+largest_initializer_name=model.net.0.weight
+largest_initializer_bytes=8192
+largest_activation_name=linear
+largest_activation_bytes=128
+operator_sequence=Gemm,Relu,Gemm,Relu,Gemm,Mul,Add
+node_count=7
+
+# Individual ONNX initializer tensors
+initializer_0_name=model.net.0.weight
+initializer_0_shape=32x64
+initializer_0_elements=2048
+initializer_0_bytes=8192
+initializer_1_name=model.net.0.bias
+initializer_1_shape=32
+initializer_1_elements=32
+initializer_1_bytes=128
+initializer_2_name=model.net.2.weight
+initializer_2_shape=16x32
+initializer_2_elements=512
+initializer_2_bytes=2048
+initializer_3_name=model.net.2.bias
+initializer_3_shape=16
+initializer_3_elements=16
+initializer_3_bytes=64
+initializer_4_name=model.net.4.weight
+initializer_4_shape=2x16
+initializer_4_elements=32
+initializer_4_bytes=128
+initializer_5_name=model.net.4.bias
+initializer_5_shape=2
+initializer_5_elements=2
+initializer_5_bytes=8
+initializer_6_name=target_mean
+initializer_6_shape=2
+initializer_6_elements=2
+initializer_6_bytes=8
+initializer_7_name=target_std
+initializer_7_shape=2
+initializer_7_elements=2
+initializer_7_bytes=8
+
+# ONNX graph nodes and initializer dependencies
+node_0_op=Gemm
+node_0_inputs=wave_samples,model.net.0.weight,model.net.0.bias
+node_0_outputs=linear
+node_0_initializer_count=2
+node_0_initializers=model.net.0.weight,model.net.0.bias
+node_1_op=Relu
+node_1_inputs=linear
+node_1_outputs=relu
+node_1_initializer_count=0
+node_1_initializers=
+node_2_op=Gemm
+node_2_inputs=relu,model.net.2.weight,model.net.2.bias
+node_2_outputs=linear_1
+node_2_initializer_count=2
+node_2_initializers=model.net.2.weight,model.net.2.bias
+node_3_op=Relu
+node_3_inputs=linear_1
+node_3_outputs=relu_1
+node_3_initializer_count=0
+node_3_initializers=
+node_4_op=Gemm
+node_4_inputs=relu_1,model.net.4.weight,model.net.4.bias
+node_4_outputs=linear_2
+node_4_initializer_count=2
+node_4_initializers=model.net.4.weight,model.net.4.bias
+node_5_op=Mul
+node_5_inputs=linear_2,target_std
+node_5_outputs=mul_10
+node_5_initializer_count=1
+node_5_initializers=target_std
+node_6_op=Add
+node_6_inputs=mul_10,target_mean
+node_6_outputs=wave_parameters
+node_6_initializer_count=1
+node_6_initializers=target_mean

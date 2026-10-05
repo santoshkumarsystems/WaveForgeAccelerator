@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "format": "waveaccel.execution_plan",
+  "producer": {
+    "tool": "tvm_emit_waveaccel_plan.py",
+    "tvm_version": "0.27.0.post1"
+  },
+  "model": {
+    "onnx_path": "artifacts/wave_model.onnx",
+    "input_name": "wave_samples",
+    "input_shape": [
+      1,
+      64
+    ],
+    "dtype": "float32"
+  },
+  "target": {
+    "name": "waveaccel-sim",
+    "contract_schema_version": 1,
+    "sram_bytes": 4096,
+    "transient_reservation_bytes": 392,
+    "initializer_staging_capacity_bytes": 3704,
+    "dtype": "float32",
+    "element_bytes": 4,
+    "supported_ops": [
+      "Gemm",
+      "Relu",
+      "Mul",
+      "Add"
+    ],
+    "memory_spaces": {
+      "model_initializers": "device_memory",
+      "initializer_staging": "sram"
+    },
+    "gemm_policy": {
+      "tiling_axis": "output_channel",
+      "tile_unit": "complete_output_weight_row",
+      "tiled_fixed_initializer": "bias"
+    }
+  },
+  "nodes": [
+    {
+      "node_index": 0,
+      "op_type": "Gemm",
+      "inputs": [
+        "wave_samples",
+        "model.net.0.weight",
+        "model.net.0.bias"
+      ],
+      "outputs": [
+        "linear"
+      ],
+      "initializer_bytes": {
+        "model.net.0.weight": 8192,
+        "model.net.0.bias": 128
+      },
+      "initializer_total_bytes": 8320,
+      "tvm_primfunc": "matmul",
+      "shape": {
+        "in_features": 64,
+        "out_features": 32
+      },
+      "weight": {
+        "name": "model.net.0.weight",
+        "bytes": 8192,
+        "row_bytes": 256
+      },
+      "bias": {
+        "name": "model.net.0.bias",
+        "bytes": 128
+      },
+      "strategy": "TILED",
+      "weight_tile_capacity_bytes": 3576,
+      "compiler_tile_width": 13,
+      "actions": [
+        "STAGE_FIXED_INITIALIZERS_TO_SRAM",
+        "FOR_EACH_TILE"
+      ],
+      "tiles": [
+        {
+          "tile_index": 0,
+          "output_start": 0,
+          "output_end": 12,
+          "output_count": 13,
+          "weight_bytes": 3328,
+          "actions": [
+            "STAGE_WEIGHT_TILE_TO_SRAM",
+            "EXECUTE_GEMM_TILE"
+          ]
+        },
+        {
+          "tile_index": 1,
+          "output_start": 13,
+          "output_end": 25,
+          "output_count": 13,
+          "weight_bytes": 3328,
+          "actions": [
+            "STAGE_WEIGHT_TILE_TO_SRAM",
+            "EXECUTE_GEMM_TILE"
+          ]
+        },
+        {
+          "tile_index": 2,
+          "output_start": 26,
+          "output_end": 31,
+          "output_count": 6,
+          "weight_bytes": 1536,
+          "actions": [
+            "STAGE_WEIGHT_TILE_TO_SRAM",
+            "EXECUTE_GEMM_TILE"
+          ]
+        }
+      ]
+    },
+    {
+      "node_index": 1,
+      "op_type": "Relu",
+      "inputs": [
+        "linear"
+      ],
+      "outputs": [
+        "relu"
+      ],
+      "initializer_bytes": {},
+      "initializer_total_bytes": 0,
+      "strategy": "EXECUTE",
+      "actions": [
+        "EXECUTE_RELU"
+      ]
+    },
+    {
+      "node_index": 2,
+      "op_type": "Gemm",
+      "inputs": [
+        "relu",
+        "model.net.2.weight",
+        "model.net.2.bias"
+      ],
+      "outputs": [
+        "linear_1"
+      ],
+      "initializer_bytes": {
+        "model.net.2.weight": 2048,
+        "model.net.2.bias": 64
+      },
+      "initializer_total_bytes": 2112,
+      "tvm_primfunc": "matmul1",
+      "shape": {
+        "in_features": 32,
+        "out_features": 16
+      },
+      "weight": {
+        "name": "model.net.2.weight",
+        "bytes": 2048,
+        "row_bytes": 128
+      },
+      "bias": {
+        "name": "model.net.2.bias",
+        "bytes": 64
+      },
+      "strategy": "STAGED_WHOLE",
+      "actions": [
+        "STAGE_INITIALIZERS_TO_SRAM",
+        "EXECUTE_GEMM"
+      ]
+    },
+    {
+      "node_index": 3,
+      "op_type": "Relu",
+      "inputs": [
+        "linear_1"
+      ],
+      "outputs": [
+        "relu_1"
+      ],
+      "initializer_bytes": {},
+      "initializer_total_bytes": 0,
+      "strategy": "EXECUTE",
+      "actions": [
+        "EXECUTE_RELU"
+      ]
+    },
+    {
+      "node_index": 4,
+      "op_type": "Gemm",
+      "inputs": [
+        "relu_1",
+        "model.net.4.weight",
+        "model.net.4.bias"
+      ],
+      "outputs": [
+        "linear_2"
+      ],
+      "initializer_bytes": {
+        "model.net.4.weight": 128,
+        "model.net.4.bias": 8
+      },
+      "initializer_total_bytes": 136,
+      "tvm_primfunc": "matmul2",
+      "shape": {
+        "in_features": 16,
+        "out_features": 2
+      },
+      "weight": {
+        "name": "model.net.4.weight",
+        "bytes": 128,
+        "row_bytes": 64
+      },
+      "bias": {
+        "name": "model.net.4.bias",
+        "bytes": 8
+      },
+      "strategy": "STAGED_WHOLE",
+      "actions": [
+        "STAGE_INITIALIZERS_TO_SRAM",
+        "EXECUTE_GEMM"
+      ]
+    },
+    {
+      "node_index": 5,
+      "op_type": "Mul",
+      "inputs": [
+        "linear_2",
+        "target_std"
+      ],
+      "outputs": [
+        "mul_10"
+      ],
+      "initializer_bytes": {
+        "target_std": 8
+      },
+      "initializer_total_bytes": 8,
+      "strategy": "STAGED_WHOLE",
+      "actions": [
+        "STAGE_INITIALIZERS_TO_SRAM",
+        "EXECUTE_MUL"
+      ]
+    },
+    {
+      "node_index": 6,
+      "op_type": "Add",
+      "inputs": [
+        "mul_10",
+        "target_mean"
+      ],
+      "outputs": [
+        "wave_parameters"
+      ],
+      "initializer_bytes": {
+        "target_mean": 8
+      },
+      "initializer_total_bytes": 8,
+      "strategy": "STAGED_WHOLE",
+      "actions": [
+        "STAGE_INITIALIZERS_TO_SRAM",
+        "EXECUTE_ADD"
+      ]
+    }
+  ]
+}

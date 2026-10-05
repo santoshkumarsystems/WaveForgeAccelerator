@@ -1,0 +1,52 @@
+{
+  "backend": "waveaccel",
+  "tvm_version": "0.27.0.post1",
+  "model": "artifacts/wave_model.onnx",
+  "target_contract": {
+    "name": "waveaccel-sim",
+    "contract_schema_version": 1,
+    "sram_bytes": 4096,
+    "transient_reservation_bytes": 392,
+    "initializer_staging_capacity_bytes": 3704,
+    "dtype": "float32",
+    "element_bytes": 4,
+    "supported_ops": [
+      "Gemm",
+      "Relu",
+      "Mul",
+      "Add"
+    ],
+    "memory_spaces": {
+      "model_initializers": "device_memory",
+      "initializer_staging": "sram"
+    },
+    "gemm_policy": {
+      "tiling_axis": "output_channel",
+      "tile_unit": "complete_output_weight_row",
+      "tiled_fixed_initializer": "bias"
+    }
+  },
+  "pre_partition_passes": [
+    "ConvertToDataflow"
+  ],
+  "dtype_constraint": "DFPattern.has_dtype(float32)",
+  "fusion_check_callbacks": false,
+  "partition_stage": "FuseOpsByPattern",
+  "bind_constants": false,
+  "annotate_codegen": true,
+  "run_codegen": false,
+  "codegen_function_count": 5,
+  "codegen_functions": [
+    "fused_relax_add_waveaccel",
+    "fused_relax_multiply_waveaccel",
+    "fused_relax_permute_dims_relax_matmul_relax_add_relax_nn_relu1_waveaccel",
+    "fused_relax_permute_dims_relax_matmul_relax_add_relax_nn_relu_waveaccel",
+    "fused_relax_permute_dims_relax_matmul_relax_add_waveaccel"
+  ],
+  "composites": {
+    "waveaccel.add": 1,
+    "waveaccel.multiply": 1,
+    "waveaccel.matmul_bias_relu": 2,
+    "waveaccel.matmul_bias": 1
+  }
+}

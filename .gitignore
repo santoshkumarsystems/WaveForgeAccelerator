@@ -1,0 +1,23 @@
+# Python environment / cache
+.venv/
+__pycache__/
+*.pyc
+
+# CMake build trees
+/build/
+/build-*/
+
+# Regenerable training data
+/data/raw/
+
+# Regenerable PyTorch training checkpoint
+*.pt
+
+# TensorRT generated engines are GPU/environment dependent
+*.trt.engine
+*.engine
+
+# Development leftovers
+*.bak
+/waveaccel_*.zip
+/waveforge_*.zip
