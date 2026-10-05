@@ -292,3 +292,15 @@ Validated public-build result:
 ```text
 100% tests passed, 0 tests failed out of 13
 ```
+
+## Public repository reproducibility
+
+A literal fresh clone of the public WaveForgeAccelerator repository was configured, built, and tested successfully.
+
+- cuWaves v0.0.1 fetched automatically from GitHub
+- CMake configure: PASS
+- C++ build: PASS
+- CTest: 13/13 PASS
+- Failures: 0
+
+This verifies that the committed public repository contains the artifacts and build integration required by the C++ compiler/runtime validation suite.

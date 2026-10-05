@@ -783,3 +783,17 @@ TVM integration then replaces specific manual decisions with compiler-derived de
 ## License
 
 Apache-2.0.
+
+## Fresh-clone validation
+
+The public GitHub repository has been validated from a clean clone.
+
+- cloned WaveForgeAccelerator from GitHub into a new directory
+- configured with CMake from scratch
+- automatically fetched cuWaves v0.0.1 from GitHub
+- built the complete C++ runtime/compiler test suite successfully
+- executed all registered CTest regressions
+
+Result: **100% tests passed, 0 tests failed out of 13.**
+
+This validation was performed from the public repository rather than the development working tree.
