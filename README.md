@@ -100,11 +100,21 @@ $$
 F(x,t) = A \sin(kx - \omega t + \phi)
 $$
 
-with:
-
 $$
 k = \frac{2\pi}{\lambda}
 $$
+
+where:
+
+- $A$ = amplitude
+- $x$ = spatial position
+- $t$ = time
+- $k$ = wave number
+- $\omega$ = angular frequency
+- $\phi$ = phase
+- $\lambda$ = wavelength
+
+For the underlying wave equations, numerical implementation, and CPU/CUDA validation, see the independent **[cuWaves project](https://github.com/santoshkumarsystems/cuwaves)**.
 
 The current dataset uses a spatial snapshot at fixed time and contains **64 spatial field samples** per example.
 
