@@ -53,29 +53,31 @@ cuWaves C++ physics model
         ↓
 dataset generation
         ↓
-PyTorch training
+PyTorch training from scratch
         ↓
 ONNX
-        ↓
-ONNX Runtime / OpenVINO / TensorRT references
-        ↓
-TVM Relax
-        ↓
-WaveForge Accelerator target contract
-        ↓
-TVM BYOC partitioning
-        ↓
-SRAM-aware compiler plan
-        ↓
-C++ ExecutionPlan transport
-        ↓
-DeviceMemoryMap
-        ↓
-DeviceCommandStream
-        ↓
-MockDevice
-        ↓
-real C++ numerical execution
+   ├── ONNX Runtime reference execution
+   ├── OpenVINO runtime reference execution
+   ├── TensorRT runtime reference execution
+   └── WaveForge compiler/runtime path
+           ↓
+        TVM Relax
+           ↓
+        WaveForge Accelerator target contract
+           ↓
+        TVM BYOC partitioning
+           ↓
+        SRAM-aware compiler plan
+           ↓
+        C++ ExecutionPlan transport
+           ↓
+        DeviceMemoryMap
+           ↓
+        DeviceCommandStream
+           ↓
+        MockDevice
+           ↓
+        real C++ numerical execution
 ```
 
 See:
@@ -94,15 +96,15 @@ The dataset is generated from the independent **cuWaves** C++ numerical project.
 
 The underlying 1D wave form is:
 
-```text
-F(x,t) = A sin(kx - wt + phi)
-```
+$$
+F(x,t) = A \sin(kx - \omega t + \phi)
+$$
 
 with:
 
-```text
-k = 2π / λ
-```
+$$
+k = \frac{2\pi}{\lambda}
+$$
 
 The current dataset uses a spatial snapshot at fixed time and contains **64 spatial field samples** per example.
 

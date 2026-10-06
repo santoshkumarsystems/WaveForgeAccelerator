@@ -38,11 +38,13 @@ The dataset is regenerable and is intentionally excluded from Git.
 
 The current dataset is generated from the 1D wave form used by cuWaves:
 
-```text
-F(x,t) = A sin(kx - wt + phi)
+$$
+F(x,t) = A \sin(kx - \omega t + \phi)
+$$
 
-k = 2π / λ
-```
+$$
+k = \frac{2\pi}{\lambda}
+$$
 
 For the current dataset:
 

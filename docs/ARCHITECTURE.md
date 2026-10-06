@@ -111,10 +111,13 @@ learned amplitude + wavelength mapping
 
 The physical source is a 1D spatial wave:
 
-```text
-F(x,t) = A sin(kx - wt + phi)
-k = 2π / λ
-```
+$$
+F(x,t) = A \sin(kx - \omega t + \phi)
+$$
+
+$$
+k = \frac{2\pi}{\lambda}
+$$
 
 The current dataset uses a spatial snapshot at fixed time. The model predicts:
 
